@@ -30,8 +30,8 @@ This section defines the foundational metrics used in the Contoso Sales Dashboar
 
 | Metric              | Description                                                                 | Suggested Formula               | DAX Example |
 |---------------------|-----------------------------------------------------------------------------|----------------------------------|-------------|
-| **UnitPrice**        | Unit price of the product. Retrieved from the `Product` table for consistency. | `SELECTEDVALUE(Product[UnitPrice])` | `UnitPrice = SELECTEDVALUE(Product[UnitPrice])` |
-| **UnitCost**         | Unit cost of the product. Retrieved from the `Product` table.              | `SELECTEDVALUE(Product[UnitCost])` | `UnitCost = SELECTEDVALUE(Product[UnitCost])` |
+| **UnitPrice**        | Unit price of the product. Retrieved from the `Product` table for consistency. | `(Product[UnitPrice])` | `UnitPrice = SUM('Product'[UnitPrice])` |
+| **UnitCost**         | Unit cost of the product. Retrieved from the `Product` table.              | `(Product[UnitCost])` | `UnitCost = SUM(Product[UnitCost])` |
 | **SalesQuantity**    | Total quantity of products sold. Defined as an explicit measure.           | `SUM(Sales[SalesQuantity])`      | `SalesQuantity = SUM(Sales[SalesQuantity])` |
 | **ReturnQuantity**   | Total quantity of products returned.                                       | `SUM(Sales[ReturnQuantity])`     | `ReturnQuantity = SUM(Sales[ReturnQuantity])` |
 | **DiscountAmount**   | Total discount amount applied to sales.                                    | `SUM(Sales[DiscountAmount])`     | `DiscountAmount = SUM(Sales[DiscountAmount])` |
@@ -49,10 +49,10 @@ This section defines the foundational metrics used in the Contoso Sales Dashboar
 
 | Metric         | Description                                                                 | Suggested Formula                                  | DAX Example |
 |----------------|-----------------------------------------------------------------------------|----------------------------------------------------|-------------|
-| **NetSales**     | Gross revenue before discounts.                                            | `UnitPrice × SalesQuantity`                        | `NetSales = [UnitPrice] * [SalesQuantity]` |
-| **SalesAmount**  | Net revenue after discounts.                                               | `NetSales - DiscountAmount`                        | `SalesAmount = [NetSales] - [DiscountAmount]` |
-| **ReturnAmount** | Monetary value of returned products.                                       | `UnitPrice × ReturnQuantity`                       | `ReturnAmount = [UnitPrice] * [ReturnQuantity]` |
-| **TotalCost**    | Total cost of sold products (excluding returns).                           | `(SalesQuantity - ReturnQuantity) × UnitCost`      | `TotalCost = ([SalesQuantity] - [ReturnQuantity]) * [UnitCost]` |
+| **NetSales**     | Gross revenue before discounts.                                            | `UnitPrice × SalesQuantity`                        | `NetSales = [SalesAmount]+[DiscountAmount]` |
+| **SalesAmount**  | Net revenue after discounts.                                               | `SUM(Sales[SalesAmount])`                      | `SalesAmount = SUM(Sales[SalesAmount]` |
+| **ReturnAmount** | Monetary value of returned products.                                       | `SUM(Sales[ReturnAmount]`                       | `ReturnAmount = SUM(Sales[DiscountAmount]` |
+| **TotalCost**    | Total cost of sold products (excluding returns).                           | `SUM(Sales[TotalCost]`      | `TotalCost = (SUM(Sales[TotalCost]` |
 
 ## 📊 Profitability Metrics
 
@@ -77,11 +77,11 @@ This section defines reusable time-based transformations using Calculation Group
 
 | Calculation Item     | Description                                               | Suggested Formula                                  | DAX Example |
 |----------------------|-----------------------------------------------------------|----------------------------------------------------|-------------|
-| YTD                  | Year-to-date total from Jan 1 to current date.            | `TOTALYTD(SELECTEDMEASURE(), 'Date'[Date])`        | `YTD = TOTALYTD(SELECTEDMEASURE(), 'Date'[Date])` |
-| MTD                  | Month-to-date total from 1st of month to current date.    | `TOTALMTD(SELECTEDMEASURE(), 'Date'[Date])`        | `MTD = TOTALMTD(SELECTEDMEASURE(), 'Date'[Date])` |
-| QTD                  | Quarter-to-date total from start of quarter to today.     | `TOTALQTD(SELECTEDMEASURE(), 'Date'[Date])`        | `QTD = TOTALQTD(SELECTEDMEASURE(), 'Date'[Date])` |
-| YoY                  | Same period last year.                                    | `CALCULATE(SELECTEDMEASURE(), SAMEPERIODLASTYEAR('Date'[Date]))` | `YoY = CALCULATE(SELECTEDMEASURE(), SAMEPERIODLASTYEAR('Date'[Date]))` |
-| Previous Month       | Same period in previous month.                            | `CALCULATE(SELECTEDMEASURE(), PREVIOUSMONTH('Date'[Date]))` | `PreviousMonth = CALCULATE(SELECTEDMEASURE(), PREVIOUSMONTH('Date'[Date]))` |
+| YTD                  | Year-to-date total from Jan 1 to current date.            | `TOTALYTD(SELECTEDMEASURE(), 'Date'[Date])`        | `YTD = TOTALYTD(SELECTEDMEASURE(), 'Calendar'[DateKey])` |
+| MTD                  | Month-to-date total from 1st of month to current date.    | `TOTALMTD(SELECTEDMEASURE(), 'Date'[Date])`        | `MTD = TOTALMTD(SELECTEDMEASURE(), 'Calendar'[DateKey])` |
+| QTD                  | Quarter-to-date total from start of quarter to today.     | `TOTALQTD(SELECTEDMEASURE(), 'Date'[Date])`        | `QTD = TOTALQTD(SELECTEDMEASURE(), 'Calendar'[DateKey])` |
+| YoY                  | Same period last year.                                    | `CALCULATE(SELECTEDMEASURE(), SAMEPERIODLASTYEAR('Date'[Date]))` | `YoY = CALCULATE(SELECTEDMEASURE(), SAMEPERIODLASTYEAR('Calendar'[DateKey]))` |
+| Previous Month       | Same period in previous month.                            | `CALCULATE(SELECTEDMEASURE(), PREVIOUSMONTH('Date'[Date]))` | `PreviousMonth = CALCULATE(SELECTEDMEASURE(), PREVIOUSMONTH('Calendar'[DateKey]))` |
 | YoY % Change         | Year-over-year percentage change.                         | `(Current - LastYear) / LastYear`                  | `YoY % = DIVIDE(SELECTEDMEASURE() - [YoY], [YoY])` |
 | MoM % Change         | Month-over-month percentage change.                       | `(Current - PreviousMonth) / PreviousMonth`        | `MoM % = DIVIDE(SELECTEDMEASURE() - [PreviousMonth], [PreviousMonth])` |
 
