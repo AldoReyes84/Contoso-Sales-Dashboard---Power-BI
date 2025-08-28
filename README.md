@@ -24,16 +24,26 @@ However, when testing this logic, the result exceeds the actual SalesAmount, sug
 
 This glossary defines the key metrics used in the Contoso Sales analysis. Each entry includes a description, a suggested formula, and a DAX implementation example for Power BI.
 
-## 🧮 Base Metrics
+## 🧮 Base Metrics (Explicit Measures)
+
+This section defines the foundational metrics used in the Contoso Sales Dashboard. All metrics are implemented as explicit DAX measures to ensure compatibility with Calculation Groups and maintain clarity across visuals.
 
 | Metric              | Description                                                                 | Suggested Formula               | DAX Example |
 |---------------------|-----------------------------------------------------------------------------|----------------------------------|-------------|
-| **UnitPrice**        | Unit price of the product. Taken from the `Product` table for consistency. | `Product[UnitPrice]`             | `UnitPrice = SELECTEDVALUE(Product[UnitPrice])` |
-| **UnitCost**         | Unit cost of the product. Taken from the `Product` table.                  | `Product[UnitCost]`              | `UnitCost = SELECTEDVALUE(Product[UnitCost])` |
-| **SalesQuantity**    | Quantity of products sold.                                                 | `Sales[SalesQuantity]`           | `SalesQuantity = SUM(Sales[SalesQuantity])` |
-| **ReturnQuantity**   | Quantity of products returned.                                             | `Sales[ReturnQuantity]`          | `ReturnQuantity = SUM(Sales[ReturnQuantity])` |
-| **DiscountAmount**   | Total discount amount applied.                                             | `Sales[DiscountAmount]`          | `DiscountAmount = SUM(Sales[DiscountAmount])` |
-| **DiscountQuantity** | Quantity of products sold with discount.                                  | `Sales[DiscountQuantity]`        | `DiscountQuantity = SUM(Sales[DiscountQuantity])` |
+| **UnitPrice**        | Unit price of the product. Retrieved from the `Product` table for consistency. | `SELECTEDVALUE(Product[UnitPrice])` | `UnitPrice = SELECTEDVALUE(Product[UnitPrice])` |
+| **UnitCost**         | Unit cost of the product. Retrieved from the `Product` table.              | `SELECTEDVALUE(Product[UnitCost])` | `UnitCost = SELECTEDVALUE(Product[UnitCost])` |
+| **SalesQuantity**    | Total quantity of products sold. Defined as an explicit measure.           | `SUM(Sales[SalesQuantity])`      | `SalesQuantity = SUM(Sales[SalesQuantity])` |
+| **ReturnQuantity**   | Total quantity of products returned.                                       | `SUM(Sales[ReturnQuantity])`     | `ReturnQuantity = SUM(Sales[ReturnQuantity])` |
+| **DiscountAmount**   | Total discount amount applied to sales.                                    | `SUM(Sales[DiscountAmount])`     | `DiscountAmount = SUM(Sales[DiscountAmount])` |
+| **DiscountQuantity** | Quantity of products sold with discount applied.                          | `SUM(Sales[DiscountQuantity])`   | `DiscountQuantity = SUM(Sales[DiscountQuantity])` |
+
+---
+
+### 🧠 Notes
+
+- All metrics above are defined as **explicit DAX measures** to ensure compatibility with Calculation Groups and advanced Time Intelligence logic.
+- Avoid using raw columns directly in visuals or calculations when dynamic logic (e.g., YTD, YoY) is required.
+- These measures serve as the foundation for derived metrics such as revenue, cost, and profitability.
 
 ## 💰 Revenue and Cost Metrics
 
@@ -60,19 +70,6 @@ This glossary defines the key metrics used in the Contoso Sales analysis. Each e
 | **DiscountRate %**   | Discount percentage applied over NetSales.                               | `DiscountAmount / NetSales`                        | `DiscountRate % = DIVIDE([DiscountAmount], [NetSales])` |
 | **ReturnRate %**     | Return percentage over quantity sold.                                    | `ReturnQuantity / SalesQuantity`                   | `ReturnRate % = DIVIDE([ReturnQuantity], [SalesQuantity])` |
 
-## ⏱️ Time Intelligence Metrics
-
-| Metric                | Description                                                                 | Suggested Formula                                | DAX Example |
-|-----------------------|-----------------------------------------------------------------------------|--------------------------------------------------|-------------|
-| Sales YTD             | Total sales accumulated from the start of the year to the current date.     | `TOTALYTD([TotalSales], 'Date'[Date])`           | `SalesYTD = TOTALYTD([TotalSales], 'Date'[Date])` |
-| Sales MTD             | Total sales accumulated from the start of the month to the current date.    | `TOTALMTD([TotalSales], 'Date'[Date])`           | `SalesMTD = TOTALMTD([TotalSales], 'Date'[Date])` |
-| Sales QTD             | Total sales accumulated from the start of the quarter to the current date.  | `TOTALQTD([TotalSales], 'Date'[Date])`           | `SalesQTD = TOTALQTD([TotalSales], 'Date'[Date])` |
-| Sales Last Year       | Sales for the same period in the previous year.                             | `SAMEPERIODLASTYEAR('Date'[Date])`               | `SalesLY = CALCULATE([TotalSales], SAMEPERIODLASTYEAR('Date'[Date]))` |
-| YoY % Change          | Year-over-year percentage change in sales.                                  | `(Current - LastYear) / LastYear`                | `YoYChange = DIVIDE([TotalSales] - [SalesLY], [SalesLY])` |
-| Sales Previous Month  | Sales for the previous month.                                               | `PREVIOUSMONTH('Date'[Date])`                    | `SalesPM = CALCULATE([TotalSales], PREVIOUSMONTH('Date'[Date]))` |
-| MoM % Change          | Month-over-month percentage change in sales.                                | `(Current - PreviousMonth) / PreviousMonth`      | `MoMChange = DIVIDE([TotalSales] - [SalesPM], [SalesPM])` |
-| Current Month Sales   | Sales for the current month only.                                           | `MONTH(TODAY()) = MONTH('Date'[Date])`           | `SalesCurrentMonth = CALCULATE([TotalSales], MONTH(TODAY()) = MONTH('Date'[Date]) && YEAR(TODAY()) = YEAR('Date'[Date]))` |
-| Current Year Sales    | Sales for the current year only.                                            | `YEAR(TODAY()) = YEAR('Date'[Date])`             | `SalesCurrentYear = CALCULATE([TotalSales], YEAR(TODAY()) = YEAR('Date'[Date]))` |
 
 ## ⏱️ Time Intelligence Calculation Group
 
@@ -94,12 +91,5 @@ This section defines reusable time-based transformations using Calculation Group
 > - Metrics are calculated using data from the `Product` and `Sales` tables.  
 > - Ensure consistency between `UnitPrice` and `UnitCost` across tables.  
 > - Formulas are adaptable to DAX, SQL, or other BI environments.
-> - ## 🔧 Explicit Measures – Best Practices
 
-> - All base metrics (e.g., Sales, Units, Price) are defined as explicit DAX measures to ensure compatibility with Calculation Groups and maintain clarity across visuals.
-
->- Example:
->- `Total Sales = SUM(Sales[Amount])`
->- `Units Sold = SUM(Sales[Quantity])`
->- `Avg Price = DIVIDE([Total Sales], [Units Sold])`
 
