@@ -60,9 +60,46 @@ This glossary defines the key metrics used in the Contoso Sales analysis. Each e
 | **DiscountRate %**   | Discount percentage applied over NetSales.                               | `DiscountAmount / NetSales`                        | `DiscountRate % = DIVIDE([DiscountAmount], [NetSales])` |
 | **ReturnRate %**     | Return percentage over quantity sold.                                    | `ReturnQuantity / SalesQuantity`                   | `ReturnRate % = DIVIDE([ReturnQuantity], [SalesQuantity])` |
 
+## ⏱️ Time Intelligence Metrics
+
+| Metric                | Description                                                                 | Suggested Formula                                | DAX Example |
+|-----------------------|-----------------------------------------------------------------------------|--------------------------------------------------|-------------|
+| Sales YTD             | Total sales accumulated from the start of the year to the current date.     | `TOTALYTD([TotalSales], 'Date'[Date])`           | `SalesYTD = TOTALYTD([TotalSales], 'Date'[Date])` |
+| Sales MTD             | Total sales accumulated from the start of the month to the current date.    | `TOTALMTD([TotalSales], 'Date'[Date])`           | `SalesMTD = TOTALMTD([TotalSales], 'Date'[Date])` |
+| Sales QTD             | Total sales accumulated from the start of the quarter to the current date.  | `TOTALQTD([TotalSales], 'Date'[Date])`           | `SalesQTD = TOTALQTD([TotalSales], 'Date'[Date])` |
+| Sales Last Year       | Sales for the same period in the previous year.                             | `SAMEPERIODLASTYEAR('Date'[Date])`               | `SalesLY = CALCULATE([TotalSales], SAMEPERIODLASTYEAR('Date'[Date]))` |
+| YoY % Change          | Year-over-year percentage change in sales.                                  | `(Current - LastYear) / LastYear`                | `YoYChange = DIVIDE([TotalSales] - [SalesLY], [SalesLY])` |
+| Sales Previous Month  | Sales for the previous month.                                               | `PREVIOUSMONTH('Date'[Date])`                    | `SalesPM = CALCULATE([TotalSales], PREVIOUSMONTH('Date'[Date]))` |
+| MoM % Change          | Month-over-month percentage change in sales.                                | `(Current - PreviousMonth) / PreviousMonth`      | `MoMChange = DIVIDE([TotalSales] - [SalesPM], [SalesPM])` |
+| Current Month Sales   | Sales for the current month only.                                           | `MONTH(TODAY()) = MONTH('Date'[Date])`           | `SalesCurrentMonth = CALCULATE([TotalSales], MONTH(TODAY()) = MONTH('Date'[Date]) && YEAR(TODAY()) = YEAR('Date'[Date]))` |
+| Current Year Sales    | Sales for the current year only.                                            | `YEAR(TODAY()) = YEAR('Date'[Date])`             | `SalesCurrentYear = CALCULATE([TotalSales], YEAR(TODAY()) = YEAR('Date'[Date]))` |
+
+## ⏱️ Time Intelligence Calculation Group
+
+This section defines reusable time-based transformations using Calculation Groups in Power BI. These allow dynamic application of logic (YTD, MTD, YoY, etc.) to any measure using `SELECTEDMEASURE()`.
+
+| Calculation Item     | Description                                               | Suggested Formula                                  | DAX Example |
+|----------------------|-----------------------------------------------------------|----------------------------------------------------|-------------|
+| YTD                  | Year-to-date total from Jan 1 to current date.            | `TOTALYTD(SELECTEDMEASURE(), 'Date'[Date])`        | `YTD = TOTALYTD(SELECTEDMEASURE(), 'Date'[Date])` |
+| MTD                  | Month-to-date total from 1st of month to current date.    | `TOTALMTD(SELECTEDMEASURE(), 'Date'[Date])`        | `MTD = TOTALMTD(SELECTEDMEASURE(), 'Date'[Date])` |
+| QTD                  | Quarter-to-date total from start of quarter to today.     | `TOTALQTD(SELECTEDMEASURE(), 'Date'[Date])`        | `QTD = TOTALQTD(SELECTEDMEASURE(), 'Date'[Date])` |
+| YoY                  | Same period last year.                                    | `CALCULATE(SELECTEDMEASURE(), SAMEPERIODLASTYEAR('Date'[Date]))` | `YoY = CALCULATE(SELECTEDMEASURE(), SAMEPERIODLASTYEAR('Date'[Date]))` |
+| Previous Month       | Same period in previous month.                            | `CALCULATE(SELECTEDMEASURE(), PREVIOUSMONTH('Date'[Date]))` | `PreviousMonth = CALCULATE(SELECTEDMEASURE(), PREVIOUSMONTH('Date'[Date]))` |
+| YoY % Change         | Year-over-year percentage change.                         | `(Current - LastYear) / LastYear`                  | `YoY % = DIVIDE(SELECTEDMEASURE() - [YoY], [YoY])` |
+| MoM % Change         | Month-over-month percentage change.                       | `(Current - PreviousMonth) / PreviousMonth`        | `MoM % = DIVIDE(SELECTEDMEASURE() - [PreviousMonth], [PreviousMonth])` |
+
 ---
 
 > **Technical Notes**  
 > - Metrics are calculated using data from the `Product` and `Sales` tables.  
 > - Ensure consistency between `UnitPrice` and `UnitCost` across tables.  
 > - Formulas are adaptable to DAX, SQL, or other BI environments.
+> - ## 🔧 Explicit Measures – Best Practices
+
+> - All base metrics (e.g., Sales, Units, Price) are defined as explicit DAX measures to ensure compatibility with Calculation Groups and maintain clarity across visuals.
+
+>- Example:
+>- `Total Sales = SUM(Sales[Amount])`
+>- `Units Sold = SUM(Sales[Quantity])`
+>- `Avg Price = DIVIDE([Total Sales], [Units Sold])`
+
