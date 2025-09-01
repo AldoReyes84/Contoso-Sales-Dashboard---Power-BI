@@ -92,4 +92,31 @@ This section defines reusable time-based transformations using Calculation Group
 > - Ensure consistency between `UnitPrice` and `UnitCost` across tables.  
 > - Formulas are adaptable to DAX, SQL, or other BI environments.
 
+## Dashboard Desing & Story Telling
+
+KIP´s  that could provide us with a simple Overview of the company Sales statement. 
+
+<img width="1284" height="742" alt="image" src="https://github.com/user-attachments/assets/fc621312-15e8-489b-a94b-8334787ec451" />
+
+Yearly Table to have a better perspective of the metrics comparing throuh time.
+
+<img width="736" height="284" alt="image" src="https://github.com/user-attachments/assets/ebc830f8-22d7-43d4-b64e-464e8ebfbed0" />
+
+Histogram for 2013 vs LY Sales
+
+<img width="765" height="188" alt="image" src="https://github.com/user-attachments/assets/d5db401b-2e53-46f1-852e-7e4cf5a82cc4" />
+
+Time Intelligence Measure Group with YTD,
+
+<img width="771" height="204" alt="image" src="https://github.com/user-attachments/assets/6b9b0eb6-5131-4996-9c7b-f3110f95459c" />
+
+YOY displays 2012 vs 2011 Sales
+
+<img width="764" height="175" alt="image" src="https://github.com/user-attachments/assets/aa93ef1f-0d67-4c9e-9fc8-75e0cb17519b" />
+
+YOY% disable the KIP's and table but privides a comparative line for 2012 vs 2013 Sales on our histogram visualization 
+
+<img width="1273" height="306" alt="image" src="https://github.com/user-attachments/assets/9f014f26-abde-4a93-86e1-6d1c5276b67b" />
+
+
 
