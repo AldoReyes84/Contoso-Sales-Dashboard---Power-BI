@@ -1,7 +1,7 @@
-# Contoso-Sales-Dashboard---Power-BI
-Contoso Sales Dashboard - Power BI
+# Contoso Sales PowerBI Dashboard 
 
-Contoso Sales Sample for Power BI data Model 
+
+Source Model, Contoso Sales Sample for Power BI data Model 
 
 <img width="550" height="393" alt="image" src="https://github.com/user-attachments/assets/090237de-2860-467d-807c-d9399e9ba881" />
 
