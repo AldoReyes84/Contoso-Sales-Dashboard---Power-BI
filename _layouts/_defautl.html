@@ -8,6 +8,7 @@
     <!-- Add any other CSS or meta tags you need -->
   </head>
   <body>
+    <div class="wrapper">
      <header>
       <h1> 
        <a href= "https://aldoreyes84.github.io/AldoReyes.github.io"/>
@@ -19,9 +20,9 @@
       {% endif %}
         
         <p class="view">
-          <a href="https://github.com/AldoReyes84/working_experience">
+          <a href="https://github.com/AldoReyes84/Data_Analisys_For_AdventureWorksDW2022/tree/main">
           View the Project on GitHub
-          <small>AldoReyes84/Working Experience</small>
+          <small>AldoReyes84/Data_Analisys_For_AdventureWorksDW2022</small>
          </a> 
         </p>
 
@@ -35,53 +36,39 @@
         </h2>
        
         <h3>
-         <p>
-          <a href="#Intel Project Analyst">
-              Intel Project Analyst
-           <small> Nov 2022 to Mar 2025  </small>
-          </a>
-         </p>
+        <a href="https://aldoreyes84.github.io/SQL_Server_AdventureWorks/">
+        SQL Service Data Analysis
+        </a>
         </h3>
-       
-        <h4>
-           <a href="#certified-instructor-program-dashboard">
-        Certified Instructor Program Dashboard
+        <h3>
+          <a href="https://github.com/AldoReyes84/Power_BI_AdventureWorks2022_Data_Analysis/">
+        Power BI Data Analysis
          </a>
-             <ul>
-        <li><a href="#applicants-pipeline"> Applicants Pipeline</a></li>
-        <li><a href="#program-overview"> Program Overview</a></li>
-        <li><a href="#instructors-activity"> Instructors Activity</a></li>
-      </ul>  
-        </h4>
-
-        <h4>
-           <a href="#workshop-quality-survey-dashboard">
-        Workshop Quality Survey Dashboard
-         </a>
-       </h4>
-       
-        <h4>
-          <a href="developers-trained-dashboard">
-        Developers Trained Dashboard
-          </a>
-        </h4>
-       
-         <h4>   
-          <a href=#docebo-lms-dashboard">
-        Docebo LMS Dashboard
-          </a>
-        </h4>
-
-      <h3>
-         <p>
-          <a href="#Intel Project Analyst">
-              Conagra Sales Analyst
-           <small> Mar 2017 to Jan 2020  </small>
-          </a>
-         </p>
         </h3>
+        <h3>
+          <a href="https://github.com/AldoReyes84/Python_Pandas_Data_Analysis/">
+        Python Data Analysis
+          </a>
+        </h3>
+         <h3>   
+          <a href=https://github.com/AldoReyes84/Excel_SQL_Server_AdventureWorks_Data_Analysis/">
+        Excel Data Analysis
+          </a>
+        </h3>
+
+      <ul>
+        <li><a href="#factresellerssales-table"> FactResellersSales table</a></li>
+        <li><a href="#factinternetsales-table"> FactInternetSales table</a></li>
+        <li><a href="#factfinance-table"> FactFinance table</a></li>
+      </ul>   
             
- 
+      <nav class="site-menu">
+        <ul>
+          {% for item in site.menu %}
+            <li><a href="{{ item.url | relative_url }}">{{ item.title }}</a></li>
+          {% endfor %}
+        </ul>
+      </nav>
       <footer>
         <p>This project is maintained by 
         <a href="https://github.com/AldoReyes84">
@@ -97,8 +84,9 @@
         </p>
       </footer>
       </header>
-      <section>
+        <section>
        {{ content }}
-      </section>  
+        </section> 
+         </div>    
   </body>
 </html>
