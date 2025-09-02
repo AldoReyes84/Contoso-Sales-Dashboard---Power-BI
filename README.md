@@ -13,11 +13,11 @@ However, when testing this logic, the result exceeds the actual SalesAmount, sug
 
   SalesAmount Cal = [Check SalesAmount]-Sum(Sales[DiscountAmount])
 
-<img width="880" height="247" alt="image" src="https://github.com/user-attachments/assets/bab0161c-eac4-491d-8fcd-694777031289" />
+<img width="500" height="141" alt="image" src="https://github.com/user-attachments/assets/bab0161c-eac4-491d-8fcd-694777031289" />
 
 ## Excel Metrics Analysis
 
-<img width="452" height="620" alt="image" src="https://github.com/user-attachments/assets/bf6ecf70-1e95-419d-87e6-50a3c28a3b66" />
+<img width="320" height="439" alt="image" src="https://github.com/user-attachments/assets/bf6ecf70-1e95-419d-87e6-50a3c28a3b66" />
 
 
 # 📘 Metrics Glossary – Contoso Sales Dashboard
