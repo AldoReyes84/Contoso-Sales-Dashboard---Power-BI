@@ -11,4 +11,4 @@ logo: assets/images/Logo Github Photo.png
   #- title: "FactFinance table"
    # url: "##FactFinance table"
   
-theme: null
+theme: jekyll-theme-minimal
